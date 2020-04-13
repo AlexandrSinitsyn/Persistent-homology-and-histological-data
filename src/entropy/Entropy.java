@@ -1,7 +1,4 @@
-/*
 package entropy;
-
-import scala.Int;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -49,8 +46,8 @@ public class Entropy {
         int w = image.getWidth();
         int h = image.getHeight();
 
-        var pixels = new int[w][h];
-        var pixelsInverted = new int[w][h];
+        var pixels = new int[h][w];
+        var pixelsInverted = new int[h][w];
 
         for (var i = 0; i < imgPixels.length; i++) {
             for (var j = 0; j < imgPixels[i].length; j++) {
@@ -97,7 +94,7 @@ public class Entropy {
         }
 
 
-        return new pair(r, component);
+        return new pair<>(r, component);
     }
 
     private void acrossComponent(int startX, int startY, int[][] map, boolean[][] was,
@@ -105,7 +102,7 @@ public class Entropy {
         boolean first = true;
 
         var toVisit = new LinkedList<pair<Integer, Integer>>();
-        toVisit.add(new pair(startX, startY));
+        toVisit.add(new pair<>(startX, startY));
 
         while (!toVisit.isEmpty()) {
             pair<Integer, Integer> current = toVisit.removeFirst();
@@ -170,7 +167,7 @@ public class Entropy {
         }
 
 
-        Map<Integer, Integer> setOfColors = new ConcurrentHashMap<>();
+        /*Map<Integer, Integer> setOfColors = new ConcurrentHashMap<>();
 
         for (int color = 0; color < listOfColors.length; color++) {
             if (listOfColors[color] != 0)
@@ -178,20 +175,21 @@ public class Entropy {
         }
 
 
-        var colors = getListOfColors(setOfColors, splitter);
+        var colors = getListOfColors(setOfColors, splitter);*/
 
 
         final var img = image;
-        colors.forEach((color, count) -> {
+        //colors.forEach((color, count) -> {
+        for (int color = 0; color <= 255; color++) {
             var images = modifyImage(img, color);
             var comp = getComponent(images[0]);
             var compInv = getComponent(images[1]);
 
-            for (int i = 0; i < count; i++) {
+            //for (int i = 0; i < count; i++) {
                 components.add(comp);
                 componentsInverted.addFirst(compInv);
-            }
-        });
+            //}
+        }//);
     }
 
     private int currentLine = 0;
@@ -225,7 +223,7 @@ public class Entropy {
 
     private int countOfSpaces;
     public Four transitions(String path, int size, int splitter) {
-        countOfSpaces = splitter + 2 - 1;
+        countOfSpaces = 256 - 1;//splitter - 1;
         reset(countOfSpaces);
 
 
@@ -291,7 +289,6 @@ public class Entropy {
                 holeLengthInverted += ((countOfSpaces - n) * sInverted[countOfSpaces][n]);
             }
         }
-
 
         String[] nameOfTheFile = path.split("/");
         String name = nameOfTheFile[nameOfTheFile.length - 1];
@@ -411,4 +408,3 @@ public class Entropy {
         return H(combined, len);
     }
 }
-*/

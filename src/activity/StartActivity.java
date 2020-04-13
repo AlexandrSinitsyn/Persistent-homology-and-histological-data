@@ -44,25 +44,8 @@ public class StartActivity extends JFrame {
     private static String absolutePath = bat.getAbsolutePath().substring(0,
             bat.getAbsolutePath().length() - ("startPython.bat").length());
 
-    private static int splitter = 64 - 2;
+    private static int splitter = 64;
 
-
-    private static class params {
-        int size, split;
-        String path;
-
-        params(int size, int split, String path) {
-            this.size = size;
-            this.split = split;
-            this.path = path;
-        }
-
-        boolean equals(params params) {
-            return this.size == params.size &&
-                    this.split== params.split &&
-                    this.path.equals(params.path);
-        }
-    }
 
     private static params previousParamsNorm = new params(1, splitter, absolutePath + "FULL\\");
     private static params previousParamsTum = new params(1, splitter, absolutePath + "FULL\\");
@@ -392,7 +375,7 @@ public class StartActivity extends JFrame {
 
             selectSplitterator.setText("count of splits: " + box.getSelectedItem().toString());
 
-            splitter = getSplitter() - 2;
+            splitter = getSplitter();
         });
         splitterator.setSelectedIndex(0);
 

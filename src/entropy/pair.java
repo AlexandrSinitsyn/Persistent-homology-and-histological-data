@@ -4,7 +4,7 @@ public class pair<I, J> {
     I i;
     J j;
 
-    public pair(I i, J j) {
+    pair(I i, J j) {
         this.i = i;
         this.j = j;
     }
