@@ -4,6 +4,7 @@
 
 
 ```toml
+[dependencies]
 sdhfkj
 фывфы
 ```
