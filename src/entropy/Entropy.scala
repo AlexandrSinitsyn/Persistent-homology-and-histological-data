@@ -1,8 +1,10 @@
-/**package entropy
+package entropy
 
 import java.awt.Color
 
 import javax.imageio.ImageIO
+
+import scala.collection.mutable
 //import java.awt._
 import java.awt.image.BufferedImage
 import java.io.File
@@ -48,23 +50,17 @@ object Entropy {
 
         r
     }
-
-
-    private def createArray[T](width: Int, height: Int): Array[T] = {
-        //new Array[T](0)
-        Array()
-    }
 }
 
 import entropy.Entropy._
 
 class Entropy {
-    private var components = null
-    private var matrix = null
+    private var components: List[(ARR, List[(Int, Int)])] = Nil
+    private var matrix: ARR = _
     var s: ARR = _
 
-    private var componentsInverted = null
-    private var matrixInverted = null
+    private var componentsInverted: List[(ARR, List[(Int, Int)])] = Nil
+    private var matrixInverted: ARR = _
     var sInverted: ARR = _
 
     private var count = 1 - 1
@@ -88,13 +84,14 @@ class Entropy {
 
 
     private def modifyImage(image: BufferedImage, color: Int): Array[ARR]  = {
-        val w = image.getWidth
-        val h = image.getHeight
+        val w = image.getWidth()
+        val h = image.getHeight()
 
-        val pixels: ARR = Array()
-        val pixelsInverted: ARR = Array()
-        for (i: Int <- imgPixels.indices) {
-            for (j: Int <- imgPixels.indices) {
+        val pixels: ARR = Array.ofDim(h, w)
+        val pixelsInverted: ARR = Array.ofDim(h, w)
+
+        for (i: Int <- 0 until h) {
+            for (j: Int <- 0 until w) {
                 if (imgPixels(i)(j) > color) {
                     pixels(i)(j) = 255
                     pixelsInverted(i)(j) = 0
@@ -109,11 +106,12 @@ class Entropy {
         Array(pixels, pixelsInverted)
     }
 
-    private def getComponent(pixels: ARR): (ARR, List[(Int, Int, Int)]) = {
+    private def getComponent(pixels: ARR): (ARR, List[(Int, Int)]) = {
         count = 1 - 1
-        val r = new Array[Array[Int]](pixels.length, pixels(0).length)
-        val was = new Array[Array[Boolean]](pixels.length, pixels(0).length)
-        var component: List[(Int, Int, Int)] = Nil
+        val r = Array.ofDim[Int](pixels.length, pixels(0).length)
+        val was = Array.ofDim[Boolean](pixels.length, pixels(0).length)
+        var component: List[(Int, Int)] = Nil
+
         var x = 0
         var y = 0
         while (y < pixels.length) {
@@ -136,8 +134,8 @@ class Entropy {
         (r, component)
     }
 
-    private def acrossComponent(startX: Int, startY: Int, map: ARR, was: Array[Array[Boolean]], imgPixels: ARR): List[(Int, Int, Int)] = {
-        var component: List[(Int, Int, Int)] = Nil
+    private def acrossComponent(startX: Int, startY: Int, map: ARR, was: Array[Array[Boolean]], imgPixels: ARR): List[(Int, Int)] = {
+        var component: List[(Int, Int)] = Nil
 
         var first = true
         var toVisit: List[(Int, Int)] = Nil
@@ -145,17 +143,17 @@ class Entropy {
         while (toVisit.nonEmpty) {
             val current = toVisit.head
             toVisit = toVisit match {
-                case h :: t => t
-                case h :: Nil => Nil
+                case _ :: t => t
                 case _ => Nil
             }
+
             val x = current._1
             val y = current._2
             if (imgPixels(y)(x) == 0) {
                 if (first) {
                     first = false
                     count += 1
-                    component = (x, y, count) :: component
+                    component = (x, y) :: component
                 }
                 map(y)(x) = count
 
@@ -180,99 +178,71 @@ class Entropy {
         var image: BufferedImage = null
         try {
             image = javax.imageio.ImageIO.read(new File(path))
-            val scale = if (size == 1) image.getWidth
-            else size
-            image = scale(image, scale, scale)
+            val size$ = if (size == 1) image.getWidth else size
+
+            image = scale(image, size$, size$)
         } catch {
             case _: IOException =>
                 System.err.println(path + "\tF")
                 System.exit(0)
         }
-        imgPixels = new Array[Array[Int]](image.getWidth, image.getHeight)
+        imgPixels = Array.ofDim[Int](image.getWidth, image.getHeight)
         val listOfColors = new Array[Int](256)
-        var i = 0
-        while ( {
-            i < imgPixels.length
-        }) {
-            var j = 0
-            while ( {
-                j < imgPixels(i).length
-            }) {
+
+        for (i: Int <- imgPixels.indices) {
+            for (j: Int <- imgPixels(i).indices) {
                 val c = new Color(image.getRGB(i, j))
                 val r = c.getRed
                 val g = c.getGreen
                 val b = c.getBlue
                 val color = (r + g + b) / 3
+
                 imgPixels(i)(j) = color
                 listOfColors(color) += 1
-
-                {
-                    j += 1;
-                    j - 1
-                }
-            }
-
-            {
-                i += 1;
-                i - 1
             }
         }
+
         val setOfColors = new ConcurrentHashMap[Int, Int]
-        var color = 0
-        while ( {
-            color < listOfColors.length
-        }) {
-            if (listOfColors(color) != 0) setOfColors.put(color, listOfColors(color))
 
-            {
-                color += 1;
-                color - 1
-            }
+        for (color: Int <- listOfColors.indices) {
+            if (listOfColors(color) != 0)
+                setOfColors.put(color, listOfColors(color))
         }
+
         val colors = getListOfColors(setOfColors, splitter)
         val img = image
         colors.forEach((color: Int, count: Int) => {
-            def foo(color: Int, count: Int) = {
-                val images = modifyImage(img, color)
-                val comp = getComponent(images(0))
-                val compInv = getComponent(images(1))
-                var i = 0
-                while ( {
-                    i < count
-                }) {
-                    components.add(comp)
-                    componentsInverted.addFirst(compInv)
+            val images = modifyImage(img, color)
+            val comp = getComponent(images(0))
+            val compInv = getComponent(images(1))
 
-                    {
-                        i += 1;
-                        i - 1
-                    }
+            for (_ <- 0 until count) {
+                def push_back[T](list: List[T], a: T) : List[T] = list match {
+                    case Nil => a :: Nil
+                    case h :: Nil => h :: a :: Nil
+                    case h :: t => h :: push_back(t, a)
                 }
+                components = push_back(components, comp)
+                componentsInverted = compInv :: componentsInverted
             }
-
-            foo(color, count)
         })
     }
 
     private var currentLine = 0
     private var fullLine = 0
 
-    private def getListOfColors(setOfColors: util.Map[Int, Int], numberOfSpaces: Int) = {
-        setOfColors.forEach((color: Int, count: Int) => fullLine += count)
+    private def getListOfColors(setOfColors: ConcurrentHashMap[Int, Int], numberOfSpaces: Int) = {
+        setOfColors.forEach((_, count: Int) => fullLine += count)
         if (numberOfSpaces <= 50) System.exit(1)
         val splitter = fullLine / numberOfSpaces
         if (splitter == 0) System.exit(1)
         val result = new ConcurrentHashMap[Int, Int]
         result.put(0, 1)
-        setOfColors.forEach((color: Int, count: Int) => {
-            def foo(color: Int, count: Int) = {
-                currentLine += count
-                val current = currentLine / splitter
-                currentLine -= current * splitter
-                if (current != 0) result.put(color, current)
-            }
-
-            foo(color, count)
+        setOfColors.forEach((color, count) => {
+            currentLine += count
+            val current = currentLine / splitter
+            currentLine -= current * splitter
+            if (current != 0) result.put(color, current)
         })
         result.put(255, 1)
         result
@@ -283,164 +253,141 @@ class Entropy {
     def transitions(path: String, size: Int, splitter: Int): Four = {
         countOfSpaces = splitter + 2 - 1
         reset(countOfSpaces)
+
+
         getMatrix(path, size, splitter)
-        var n = 0
-        while ( {
-            n <= countOfSpaces
-        }) {
-            var m = n
-            while ( {
-                m <= countOfSpaces
-            }) { // todo     0-Entropy
-                val first = components.get(n).j
-                val arrival = List[Int]
-                import scala.collection.JavaConversions._
-                for (e <- first) {
-                    arrival.add(components.get(m).i(e.y)(e.x))
+
+
+        for (n: Int <- 0 to countOfSpaces) {
+            for (m: Int <- n to countOfSpaces) {
+                // todo     0-Entropy
+                {
+                    val first = components(n)._2
+
+                    var arrival: List[Int] = Nil
+                    for (e <- first) arrival = components(m)._1(e._2)(e._1) :: arrival
+
+                    matrix(m)(n) = mutable.HashSet(arrival).size
                 }
-                matrix(m)(n) = new HashSet[Int](arrival).size
 
                 // todo     1-Entropy
-                val first = componentsInverted.get(n).j
-                val arrival = List[Int]
-                import scala.collection.JavaConversions._
-                for (e <- first) {
-                    arrival.add(componentsInverted.get(m).i(e.y)(e.x))
+                {
+                    val first = componentsInverted(n)._2
+
+                    var arrival: List[Int] = Nil
+                    for (e <- first) arrival = componentsInverted(m)._1(e._2)(e._1) :: arrival
+
+                    matrixInverted(m)(n) = mutable.HashSet(arrival).size
                 }
-                matrixInverted(m)(n) = new HashSet[Int](arrival).size
 
                 if (m != n) {
-                    s(m - 1)(n) = getSnm(n, m - 1, matrix)
-                    holeLength += ((m - 1) - n) * s(m - 1)(n)
+                    // todo     0-Entropy
+                    {
+                        s(m - 1)(n) = getSnm(n, m - 1, matrix)
 
-                    sInverted(m - 1)(n) = getSnm(n, m - 1, matrixInverted)
-                    holeLengthInverted += ((m - 1) - n) * sInverted(m - 1)(n)
+                        holeLength += ((m - 1) - n) * s(m - 1)(n)
+                    }
 
+                    // todo     1-Entropy
+                    {
+                        sInverted(m - 1)(n) = getSnm(n, m - 1, matrixInverted)
+
+                        holeLengthInverted += ((m - 1) - n) * sInverted(m - 1)(n)
+                    }
                 }
-
-                {
-                    m += 1;
-                    m - 1
-                }
-            }
-
-            {
-                n += 1;
-                n - 1
             }
         }
-        var n = 0
-        while ( {
-            n <= countOfSpaces
-        }) {
-            s(countOfSpaces)(n) = getSnm(n, countOfSpaces, matrix)
-            holeLength += ((countOfSpaces - n) * s(countOfSpaces)(n))
 
-            sInverted(countOfSpaces)(n) = getSnm(n, countOfSpaces, matrixInverted)
-            holeLengthInverted += ((countOfSpaces - n) * sInverted(countOfSpaces)(n))
-
-
+        for (n <- 0 to countOfSpaces) {
+            // todo     0-Entropy
             {
-                n += 1;
-                n - 1
+                s(countOfSpaces)(n) = getSnm(n, countOfSpaces, matrix)
+
+                holeLength += ((countOfSpaces - n) * s(countOfSpaces)(n))
+            }
+
+            // todo     1-Entropy
+            {
+                sInverted(countOfSpaces)(n) = getSnm(n, countOfSpaces, matrixInverted)
+
+                holeLengthInverted += ((countOfSpaces - n) * sInverted(countOfSpaces)(n))
             }
         }
+
+
         val nameOfTheFile = path.split("/")
         val name = nameOfTheFile(nameOfTheFile.length - 1)
-        System.out.print(name + ": ")
+        print(name + ": ")
+
         val result = H(s, holeLength)
         val resultInverted = H(sInverted, holeLengthInverted)
         val resultCombined = getCombinedEntropy
-        System.out.println(result + "\n" + resultInverted + "\n" + resultCombined)
+
+        println(result + "\n" + resultInverted + "\n" + resultCombined)
+
         new Four(name, result, resultInverted, resultCombined)
     }
 
+
     private def getSnm(n: Int, m: Int, r: Array[Array[Int]]) = {
         var snm = r(m)(n)
-        if (n - 1 >= 0) snm += -r(m)(n - 1) + (if (m + 1 < r.length) r(m + 1)(n - 1)
-        else 0)
-        snm += -
-        if ((m + 1 < r.length)) r(m + 1)(n)
-        else 0
+
+        if (n - 1 >= 0)
+            snm += -r(m)(n - 1) + (if (m + 1 < r.length) r(m + 1)(n - 1) else 0)
+
+        snm += -(if (m + 1 < r.length) r(m + 1)(n) else 0)
+
         snm
     }
 
     def H(s: Array[Array[Int]], L: Double): Double = {
         var r = 0d
-        var n = 0
-        while ( {
-            n <= countOfSpaces
-        }) {
-            var m = n + 1
-            while ( {
-                m <= countOfSpaces
-            }) {
-                if (s(m)(n) == 0) {
-                    continue //todo: continue is not supported}
-                    //System.out.println(r + " (" + n + ", " + m + ")");
+
+        for (n <- 0 to countOfSpaces) {
+            for (m <- n + 1 to countOfSpaces) {
+                if (s(m)(n) != 0) {
                     val argument = (m - n) * s(m)(n) / L
-                    //System.out.println(argument + " " + (m - n) + " " + s[m][n] + " " + L);
                     r += (argument * (Math.log(argument) / Math.log(2)))
-
-                    {
-                        m += 1;
-                        m - 1
-                    }
-                }
-
-                {
-                    n += 1;
-                    n - 1
                 }
             }
-            return -r
         }
 
-        private def reset(splitter: Int): Unit
+        -r
+    }
 
-        =
-        {
-            splitter += 1
-            components = List[pair[Array[Array[Int]], List[(Int, Int, Int)]]]
-            matrix = new Array[Array[Int]](splitter, splitter)
-            s = new Array[Array[Int]](splitter, splitter)
-            componentsInverted = List[pair[Array[Array[Int]], List[(Int, Int, Int)]]]
-            matrixInverted = new Array[Array[Int]](splitter, splitter)
-            sInverted = new Array[Array[Int]](splitter, splitter)
-            count = 1 - 1
-            holeLength = 0
-            holeLengthInverted = 0
-            fullLine = 0
-            currentLine = 0
-        }
+    private def reset(splitter$: Int): Unit = {
+        val splitter = splitter$ + 1
 
-        def getCombinedEntropy = {
-            val combined = new Array[Array[Int]](s.length, s(0).length)
-            var len = 0
-            var n = 0
-            while ( {
-                n <= countOfSpaces
-            }) {
-                var m = n
-                while ( {
-                    m <= countOfSpaces
-                }) {
-                    combined(m)(n) = s(m)(n) + sInverted(m)(n)
-                    len += (m - n) * combined(m)(n)
+        components = Nil
+        matrix = Array.ofDim[Int](splitter, splitter)
+        s = Array.ofDim[Int](splitter, splitter)
 
-                    {
-                        m += 1;
-                        m - 1
-                    }
-                }
+        componentsInverted = Nil
+        matrixInverted = Array.ofDim[Int](splitter, splitter)
+        sInverted = Array.ofDim[Int](splitter, splitter)
 
-                {
-                    n += 1;
-                    n - 1
-                }
+
+        count = 1 - 1
+
+        holeLength = 0
+        holeLengthInverted = 0
+
+        fullLine = 0
+        currentLine = 0
+    }
+
+    def getCombinedEntropy: Double = {
+        val combined = Array.ofDim[Int](s.length, s(0).length)
+
+        var len = 0
+        for (n <- 0 to countOfSpaces) {
+            for (m <- n to countOfSpaces) {
+                combined(m)(n) = s(m)(n) + sInverted(m)(n)
+
+                len += (m - n) * combined(m)(n)
             }
-            H(combined, len)
         }
+
+        H(combined, len)
     }
 }
-*/

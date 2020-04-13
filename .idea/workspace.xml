@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="ph&amp;hd:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="ab7b8871-97f0-4538-b92e-711e04c60f33" name="Default Changelist" comment="" />
+    <list default="true" id="ab7b8871-97f0-4538-b92e-711e04c60f33" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ph&amp;hd/entropy/Entropy.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ph&amp;hd/entropy/Entropy.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ph&amp;hd/entropy/three.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entropy/Entropy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/entropy/Entropy.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entropy/Entropy.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/entropy/Entropy.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entropy/three.java" beforeDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -11,15 +23,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/activity/StartActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+            <state relative-caret-position="275">
+              <caret line="70" column="12" lean-forward="true" selection-start-line="70" selection-start-column="12" selection-end-line="70" selection-end-column="12" />
               <folding>
                 <element signature="e#1807#2240#0" />
                 <element signature="e#2492#2586#0" />
-                <element signature="e#2594#7602#0" />
                 <element signature="e#7610#9942#0" />
                 <element signature="e#9950#10520#0" />
                 <element signature="e#10526#10673#0" />
@@ -35,7 +46,55 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/entropy/Entropy.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="214">
+              <caret line="220" column="40" selection-start-line="220" selection-start-column="40" selection-end-line="220" selection-end-column="40" />
+              <folding>
+                <element signature="e#17#38#0" expanded="true" />
+                <element signature="e#1471#1876#0" />
+                <element signature="e#2538#3317#0" />
+                <element signature="e#3323#4678#0" />
+                <element signature="e#3721#3850#0" />
+                <element signature="e#6476#7140#0" />
+                <element signature="e#9572#9853#0" />
+                <element signature="e#9865#10249#0" />
+                <element signature="e#10302#10891#0" />
+                <element signature="e#11592#12306#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/entropy/Entropy.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="48" column="8" lean-forward="true" selection-start-line="48" selection-start-column="8" selection-end-line="49" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/entropy/CalculateEntropy.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="238">
+              <caret line="116" column="45" selection-start-line="116" selection-start-column="45" selection-end-line="116" selection-end-column="45" />
+              <folding>
+                <element signature="method#getAllFiles#0;class#CalculateEntropy#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>_3</find>
+      <find>.n</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -44,6 +103,10 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/activity/StartActivity.java" />
+        <option value="$PROJECT_DIR$/src/entropy/three.java" />
+        <option value="$PROJECT_DIR$/src/entropy/Entropy.java" />
+        <option value="$PROJECT_DIR$/src/entropy/CalculateEntropy.java" />
+        <option value="$PROJECT_DIR$/src/entropy/Entropy.scala" />
       </list>
     </option>
   </component>
@@ -142,6 +205,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1176" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Designer" />
       <window_info id="UI Designer" />
@@ -151,10 +215,10 @@
       <window_info anchor="bottom" id="Version Control" />
       <window_info anchor="bottom" id="Terminal" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" />
+      <window_info anchor="bottom" id="Messages" weight="0.32947367" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32912722" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32947367" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32842106" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32947367" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -175,24 +239,72 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/entropy/Entropy.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="5" column="12" lean-forward="true" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/entropy.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/activity/StartActivity.java">
+    <entry file="jar://$PROJECT_DIR$/../jdk-12.0.2/lib/src.zip!/java.base/java/util/concurrent/ConcurrentHashMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="61">
+          <caret line="997" column="6" lean-forward="true" selection-start-line="997" selection-start-column="6" selection-end-line="997" selection-end-column="6" />
+          <folding>
+            <element signature="e#44314#44315#0" expanded="true" />
+            <element signature="e#44362#44363#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../jdk-12.0.2/lib/src.zip!/java.base/java/util/HashSet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="89" column="13" selection-start-line="89" selection-start-column="13" selection-end-line="89" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/entropy/pair.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/entropy/three.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="8" column="19" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/../jdk-12.0.2/lib/src.zip!/java.base/java/lang/System.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="92" column="19" selection-start-line="92" selection-start-column="19" selection-end-line="92" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/entropy/Four.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="6" column="34" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/entropy/CalculateEntropy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
-          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+          <caret line="116" column="45" selection-start-line="116" selection-start-column="45" selection-end-line="116" selection-end-column="45" />
+          <folding>
+            <element signature="method#getAllFiles#0;class#CalculateEntropy#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/activity/StartActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="70" column="12" lean-forward="true" selection-start-line="70" selection-start-column="12" selection-end-line="70" selection-end-column="12" />
           <folding>
             <element signature="e#1807#2240#0" />
             <element signature="e#2492#2586#0" />
-            <element signature="e#2594#7602#0" />
             <element signature="e#7610#9942#0" />
             <element signature="e#9950#10520#0" />
             <element signature="e#10526#10673#0" />
@@ -203,6 +315,32 @@
             <element signature="e#22771#24276#0" />
             <element signature="e#24285#24866#0" />
             <element signature="e#24983#25427#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/entropy/Entropy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="48" column="8" lean-forward="true" selection-start-line="48" selection-start-column="8" selection-end-line="49" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/entropy/Entropy.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="220" column="40" selection-start-line="220" selection-start-column="40" selection-end-line="220" selection-end-column="40" />
+          <folding>
+            <element signature="e#17#38#0" expanded="true" />
+            <element signature="e#1471#1876#0" />
+            <element signature="e#2538#3317#0" />
+            <element signature="e#3323#4678#0" />
+            <element signature="e#3721#3850#0" />
+            <element signature="e#6476#7140#0" />
+            <element signature="e#9572#9853#0" />
+            <element signature="e#9865#10249#0" />
+            <element signature="e#10302#10891#0" />
+            <element signature="e#11592#12306#0" />
           </folding>
         </state>
       </provider>

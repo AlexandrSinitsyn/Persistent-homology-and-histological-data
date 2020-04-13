@@ -1,4 +1,7 @@
+/*
 package entropy;
+
+import scala.Int;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -12,11 +15,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Entropy {
 
-    private LinkedList<pair<int[][], LinkedList<three>>> components;
+    private LinkedList<pair<int[][], LinkedList<pair<Integer, Integer>>>> components;
     private int[][] matrix;
     public int[][] s;
 
-    private LinkedList<pair<int[][], LinkedList<three>>> componentsInverted;
+    private LinkedList<pair<int[][], LinkedList<pair<Integer, Integer>>>> componentsInverted;
     private int[][] matrixInverted;
     public int[][] sInverted;
 
@@ -65,13 +68,13 @@ public class Entropy {
     }
 
 
-    private pair<int[][], LinkedList<three>> getComponent(int[][] pixels) {
+    private pair<int[][], LinkedList<pair<Integer, Integer>>> getComponent(int[][] pixels) {
         count = 1 - 1;
 
 
         int[][] r = new int[pixels.length][pixels[0].length];
         boolean[][] was = new boolean[pixels.length][pixels[0].length];
-        var component = new LinkedList<three>();
+        var component = new LinkedList<pair<Integer, Integer>>();
 
 
         int x = 0;
@@ -98,7 +101,7 @@ public class Entropy {
     }
 
     private void acrossComponent(int startX, int startY, int[][] map, boolean[][] was,
-                                 LinkedList<three> component, int[][] imgPixels) {
+                                 LinkedList<pair<Integer, Integer>> component, int[][] imgPixels) {
         boolean first = true;
 
         var toVisit = new LinkedList<pair<Integer, Integer>>();
@@ -114,7 +117,7 @@ public class Entropy {
                     first = false;
 
                     count++;
-                    component.add(new three(x, y, count));
+                    component.add(new pair<>(x, y));
                 }
 
                 map[y][x] = count;
@@ -236,8 +239,8 @@ public class Entropy {
                     var first = components.get(n).j;
 
                     var arrival = new LinkedList<Integer>();
-                    for (entropy.three e : first)
-                        arrival.add(components.get(m).i[e.y][e.x]);
+                    for (entropy.pair<Integer, Integer> e : first)
+                        arrival.add(components.get(m).i[e.j][e.i]);
 
 
                     matrix[m][n] = (new HashSet<>(arrival)).size();
@@ -248,8 +251,8 @@ public class Entropy {
                     var first = componentsInverted.get(n).j;
 
                     var arrival = new LinkedList<Integer>();
-                    for (entropy.three e : first)
-                        arrival.add(componentsInverted.get(m).i[e.y][e.x]);
+                    for (entropy.pair<Integer, Integer> e : first)
+                        arrival.add(componentsInverted.get(m).i[e.j][e.i]);
 
 
                     matrixInverted[m][n] = (new HashSet<>(arrival)).size();
@@ -373,6 +376,7 @@ public class Entropy {
 
     private void reset(int splitter) {
         ++splitter;
+
         components = new LinkedList<>();
         matrix = new int[splitter][splitter];
         s = new int[splitter][splitter];
@@ -407,3 +411,4 @@ public class Entropy {
         return H(combined, len);
     }
 }
+*/
